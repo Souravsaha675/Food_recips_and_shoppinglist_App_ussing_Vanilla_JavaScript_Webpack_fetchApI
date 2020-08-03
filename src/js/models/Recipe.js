@@ -106,4 +106,15 @@ export default class Recipe{
         this.ingredients = newIngridents;
 
     }
+
+    updateServing(type) {
+
+        const newServing = type === "dec" ? this.servings - 1 : this.servings+1;
+
+        this.ingredients.map(item => {
+            item.count *= (newServing/this.servings);
+        });
+
+        this.servings = newServing;
+    }
 }

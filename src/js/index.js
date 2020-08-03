@@ -81,7 +81,7 @@ const controlRecipe = async () =>{
             
             state.recipe.calculateCookingTime();
 
-            console.log(state.recipe);
+            //console.log(state.recipe);
 
             clearLoader();
 
@@ -95,3 +95,23 @@ const controlRecipe = async () =>{
 
 
 ["hashchange","load"].forEach(e=> window.addEventListener(e,controlRecipe));
+
+elements.recipes.addEventListener("click", e=>{
+    if(e.target.matches(".btn-decrease,.btn-decrease *")){
+        if(state.recipe.servings>1){
+            
+            state.recipe.updateServing("dec");
+            
+            recipeView.updateServingIngredients(state.recipe);
+        
+        }
+
+    } else if(e.target.matches(".btn-increase,.btn-increase *")){
+        state.recipe.updateServing("inc");
+        
+        recipeView.updateServingIngredients(state.recipe);
+    }
+
+    console.log(state.recipe);
+    
+})
