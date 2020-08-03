@@ -67,6 +67,8 @@ const controlRecipe = async () =>{
 
         renderLoader(elements.recipes);
 
+        if(state.Search) {searchView.highlightSelected(id);}
+
         state.recipe = new Recipe(id);
         
         try {
@@ -79,7 +81,7 @@ const controlRecipe = async () =>{
             
             state.recipe.calculateCookingTime();
 
-            //console.log(state.recipe);
+            console.log(state.recipe);
 
             clearLoader();
 
