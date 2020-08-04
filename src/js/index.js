@@ -3,7 +3,8 @@ import {elements,renderLoader,clearLoader} from "./views/base"
 import * as searchView from "./views/searchView"
 import * as recipeView from "./views/recipeView"
 import Recipe from "./models/Recipe";
-
+import ShoppingList from "./models/ShoppingList";
+import * as ShoppingListView from "./views/shoppingListView";
 
 const state = {};
 
@@ -74,7 +75,7 @@ const controlRecipe = async () =>{
         try {
 
             await state.recipe.getRecipe();
-            console.log(state.recipe.ingredients);
+            //console.log(state.recipe.ingredients);
             state.recipe.parseIngridents();
 
             state.recipe.calculateServings();
@@ -110,8 +111,49 @@ elements.recipes.addEventListener("click", e=>{
         state.recipe.updateServing("inc");
         
         recipeView.updateServingIngredients(state.recipe);
+    } else if(e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+        controlShoppingList();
     }
 
-    console.log(state.recipe);
+    //console.log(state.recipe);
     
+});
+
+
+
+
+
+///////////////////////////shoppingList/////////////////////////////////////////
+
+
+//window.l = new ShoppingList();
+
+const controlShoppingList = ()=>{
+    if(!state.list) state.list =new ShoppingList();
+    
+    state.recipe.ingredients.map(item=>{
+        //console.log(item);
+        
+        const lists = state.list.addItem(item.count,item.unit,item.ingredient);
+
+        ShoppingListView.renderList(lists);
+    });
+}
+
+
+elements.shoppingList.addEventListener("click",e=>{
+    const id = e.target.closest(".shopping__item").dataset.itemid;
+
+    if(e.target.matches(".shopping__delete,.shopping__delete *")){
+        state.list.deleteItem(id);
+
+        ShoppingListView.deleteItem(id);
+    } else if(e.target.matches(".shopping__count-value")){
+        const newCount =parseFloat(e.target.value,10);
+
+        state.list.updateCount(id,newCount);
+    }
 })
+
+
+window.s = state;
