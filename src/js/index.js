@@ -5,6 +5,7 @@ import * as recipeView from "./views/recipeView"
 import Recipe from "./models/Recipe";
 import ShoppingList from "./models/ShoppingList";
 import * as ShoppingListView from "./views/shoppingListView";
+import Likes from "./models/Like";
 
 const state = {};
 
@@ -113,6 +114,8 @@ elements.recipes.addEventListener("click", e=>{
         recipeView.updateServingIngredients(state.recipe);
     } else if(e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
         controlShoppingList();
+    } else if(e.target.matches(".recipe__love,.recipe__love *")){
+        controlLikes();
     }
 
     //console.log(state.recipe);
@@ -156,4 +159,33 @@ elements.shoppingList.addEventListener("click",e=>{
 })
 
 
-window.s = state;
+
+
+
+///////////////////////////////Likes //////////////////////////
+
+
+const controlLikes= ()=>{
+
+    if(!state.likes) state.likes=new Likes();
+
+    const currentId = state.recipe.id;
+
+    if(!state.likes.isLiked(currentId)){
+
+        const newLike= state.likes.addLikes(
+            currentId,
+            state.recipe.title,
+            state.recipe.author,
+            state.recipe.image_url
+        );
+
+        console.log(state.likes);
+    } else {
+        state.likes.deleteLike(currentId);
+
+        console.log(state.likes);
+    }
+}
+
+window.s=state;
