@@ -12,7 +12,9 @@ export default class Likes{
         };
 
         this.Likes.push(like);
-
+        
+        this.localData();
+        
         return like;
     }
 
@@ -20,6 +22,8 @@ export default class Likes{
         const index=this.Likes.findIndex(item => item.id===id);
 
         this.Likes.splice(index,1);
+
+        this.localData();
     }
 
     isLiked(id){
@@ -28,5 +32,15 @@ export default class Likes{
 
     getNumberOfLikes(){
         return this.Likes.length;
+    }
+
+    localData(){
+        localStorage.setItem('likes', JSON.stringify(this.Likes));
+    }
+
+    getlocalData(){
+        const localdata = JSON.parse(localStorage.getItem('likes'));
+
+        if(localdata) this.Likes=localdata;
     }
 }

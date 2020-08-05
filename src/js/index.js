@@ -6,6 +6,7 @@ import Recipe from "./models/Recipe";
 import ShoppingList from "./models/ShoppingList";
 import * as ShoppingListView from "./views/shoppingListView";
 import Likes from "./models/Like";
+import * as LikesView from "./views/likesView";
 
 const state = {};
 
@@ -87,7 +88,7 @@ const controlRecipe = async () =>{
 
             clearLoader();
 
-            recipeView.renderRecipes(state.recipe);
+            recipeView.renderRecipes(state.recipe,state.likes.isLiked(id));
         
         } catch (err){
             console.log(err);
@@ -180,12 +181,31 @@ const controlLikes= ()=>{
             state.recipe.image_url
         );
 
+        LikesView.toggleLiked(true);
+
+        LikesView.renderLikke(newLike);
+
         console.log(state.likes);
     } else {
         state.likes.deleteLike(currentId);
 
-        console.log(state.likes);
+        LikesView.toggleLiked(false);
+        
+        LikesView.deleteLike(currentId)
     }
+
+    LikesView.toggleLikeMenu(state.likes.getNumberOfLikes());
 }
 
-window.s=state;
+//window.s=state;
+
+
+window.addEventListener('load', ()=>{
+    state.likes = new Likes();
+
+    state.likes.getlocalData();
+
+    LikesView.toggleLikeMenu(state.likes.getNumberOfLikes());
+
+    state.likes.Likes.map(like =>LikesView.renderLikke(like));
+})
