@@ -5,17 +5,19 @@ const formatCount = count =>{
 
     if(count){
 
-        const [int,dec] = count.toString().split(".").map(item => parseInt(item,10));
+        const newcount = Math.round(count*1000)/1000;
+
+        const [int,dec] = newcount.toString().split(".").map(item => parseInt(item,10));
 
         if(!dec){
-            return count;
+            return newcount;
         } else if(int === 0){
-            const fraction = new Fraction(count);
+            const fraction = new Fraction(newcount);
 
             return `${fraction.numerator}/${fraction.denominator}`;
 
         } else {
-            const fraction = new Fraction(count - int);
+            const fraction = new Fraction(newcount - int);
 
             return `${int} ${fraction.numerator}/${fraction.denominator}`;
         }
